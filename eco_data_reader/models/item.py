@@ -7,6 +7,7 @@ class Item:
     name: str
     item_name_id: str
     tag: bool = False
+    tags: List[str] = field(default_factory=list)
     image_file: str = "UI_Icons_06.png"
     x_pos: int = 0
     y_pos: int = 0
@@ -59,6 +60,7 @@ class Item:
             'name': self.name,
             'nameID': self.item_name_id,
             'tag': self.tag,
+            'tags': self.tags,
             'imageFile': self.image_file,
             'xPos': self.x_pos,
             'yPos': self.y_pos

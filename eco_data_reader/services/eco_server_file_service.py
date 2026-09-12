@@ -43,9 +43,11 @@ class EcoServerFileService:
                     name = self._get_name_from_cs_file_contents(file_contents)
                     if name:
                         item_name_id = self._get_item_name_id_from_cs_file_contents(file_contents)
+                        item_tags = self._get_item_tags_from_cs_file_contents(file_contents)
                         items.append(Item(
                             name=name,
                             item_name_id=item_name_id,
+                            tags=item_tags,
                             image_file="UI_Icons_06.png",
                             x_pos=0,
                             y_pos=0
@@ -339,6 +341,32 @@ class EcoServerFileService:
         name_search_regex = r'public partial class (\w+Item)'
         match = re.search(name_search_regex, contents)
         return match.group(1) if match else None
+
+    @staticmethod
+    def _get_item_tags_from_cs_file_contents(contents: str) -> List[str]:
+        """Extract the item-category tags (e.g. [Tag("Housing")]) applied to an item's class,
+        matching the same name-ID form (spaces stripped) used by get_all_tags().
+
+        Some files (e.g. Block/*.cs) define several classes - the item's own attribute block sits
+        directly above its class declaration, so we scan backwards from there rather than
+        searching the whole file, to avoid picking up [Tag(...)] attributes from other classes."""
+        class_match = re.search(r'public partial class \w+Item\b', contents)
+        if not class_match:
+            return []
+
+        attribute_line_regex = re.compile(r'^(?:\[[^\]]*\])+\s*(?://.*)?$')
+        attribute_lines = []
+        for line in reversed(contents[:class_match.start()].splitlines()):
+            stripped = line.strip()
+            if not stripped:
+                continue
+            if attribute_line_regex.match(stripped):
+                attribute_lines.append(line)
+            else:
+                break
+
+        tag_regex = r'\[Tag\("([\w\s]+)"\)\]'
+        return [match.replace(" ", "") for match in re.findall(tag_regex, '\n'.join(attribute_lines))]
 
     @staticmethod
     def _get_skill_from_cs_file_contents(file_contents: str, file_name: str) -> Optional[Skill]:
