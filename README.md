@@ -13,10 +13,11 @@ A Python tool for reading and processing Eco server game data. Extracts items, r
 
 1. **Clone or download this repository**
 2. **Configure the application**
-   Edit `config.ini` and set your `ECO_SERVER_PATH` to your Eco server's `Mods\__core__` folder:
+   Copy `config.ini.example` to `config.ini` and set your `ECO_SERVER_PATH` to your Eco server's `Mods\__core__` folder:
    ```ini
    ECO_SERVER_PATH = D:\Eco Servers\EcoServerPC_v0.10.0.0-beta\Mods\__core__
    ```
+   `config.ini` is gitignored, so your local paths won't be committed.
 
 3. **Run the application**
    - Windows: Double-click `run.bat`

@@ -16,7 +16,7 @@ class Config:
         if not os.path.exists(config_path):
             raise FileNotFoundError(
                 f"Config file not found at {config_path}. "
-                f"Please create a config.ini file with ECO_SERVER_PATH setting."
+                f"Copy config.ini.example to config.ini and set your ECO_SERVER_PATH."
             )
 
         self.config.read(config_path)

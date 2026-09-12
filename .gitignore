@@ -30,6 +30,7 @@ desktop.ini
 output/
 python/
 *.log
+config.ini
 
 # Crafting tree viewer data files (generated)
 crafting-tree-viewer/items-data.js
