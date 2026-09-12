@@ -1,3 +1,5 @@
+"""Data models scraped from the Eco server's .cs source files."""
+
 from .item import Item
 from .recipe import Recipe
 from .ingredient import Ingredient

@@ -1,3 +1,6 @@
+"""Scrapes item, recipe, crafting table, skill, tag, and benefit data out of the Eco
+server's .cs mod source files."""
+
 import os
 import re
 import logging
@@ -10,6 +13,8 @@ logger = logging.getLogger(__name__)
 
 
 class EcoServerFileService:
+    """Reads and regex-parses the Eco server's .cs source files into this project's data models."""
+
     ITEMS_LOCATION = "AutoGen\\"
     TAGS_LOCATION = "Systems\\TagDefinitions.cs"
     TALENT_GROUPS_FOLDER = "Benefit"
@@ -28,6 +33,7 @@ class EcoServerFileService:
         self.eco_server_path = eco_server_mods_core_path
 
     def get_all_items(self) -> List[Item]:
+        """Scrape all items (and their category tags) out of AutoGen\\<ItemFolder>\\*.cs."""
         items = []
 
         for folder in self.ITEM_FOLDERS:
@@ -59,6 +65,7 @@ class EcoServerFileService:
         return items
 
     def get_all_tags(self) -> List[Item]:
+        """Scrape all non-hidden tag definitions out of Systems\\TagDefinitions.cs."""
         tags = []
 
         try:
@@ -91,6 +98,7 @@ class EcoServerFileService:
         return tags
 
     def get_all_recipes(self) -> List[Recipe]:
+        """Scrape all recipes out of AutoGen\\<RecipeFolder>\\*.cs."""
         recipes = []
 
         for folder in self.RECIPE_FOLDERS:
@@ -113,6 +121,7 @@ class EcoServerFileService:
         return recipes
 
     def get_all_crafting_tables(self) -> List[CraftingTable]:
+        """Scrape all crafting tables out of AutoGen\\<CraftingTableFolder>\\*.cs."""
         crafting_tables = []
 
         for folder in self.CRAFTING_TABLE_FOLDERS:
@@ -136,6 +145,7 @@ class EcoServerFileService:
         return crafting_tables
 
     def get_all_skills(self) -> List[Skill]:
+        """Scrape all specialty skills out of AutoGen\\<SkillFolder>\\*.cs."""
         skills = []
 
         for folder in self.SKILL_FOLDERS:

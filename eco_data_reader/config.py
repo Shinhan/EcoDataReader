@@ -1,9 +1,13 @@
+"""Reads paths and settings for this tool from config.ini."""
+
 import configparser
 import os
 from pathlib import Path
 
 
 class Config:
+    """Loads and exposes settings from config.ini (see config.ini.example)."""
+
     def __init__(self, config_path: str = None):
         if config_path is None:
             # Default to config.ini in the root directory
@@ -23,6 +27,7 @@ class Config:
 
     @property
     def eco_server_path(self) -> str:
+        """Path to the Eco server's Mods\\__core__ folder."""
         path = self.config.get('Paths', 'ECO_SERVER_PATH', fallback='')
         if not path:
             raise ValueError(
@@ -33,8 +38,10 @@ class Config:
 
     @property
     def eco_crafting_tool_path(self) -> str:
+        """Path to the EcoCraftingTool data folder, used for comparison features."""
         return self.config.get('Paths', 'ECO_CRAFTING_TOOL_PATH', fallback='')
 
     @property
     def white_tiger_path(self) -> str:
+        """Path to the White Tiger server, used for special comparison features."""
         return self.config.get('Paths', 'WHITE_TIGER_PATH', fallback='')

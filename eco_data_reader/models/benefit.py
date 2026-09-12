@@ -1,15 +1,20 @@
+"""Benefit (talent) model."""
+
 from dataclasses import dataclass, field
 from typing import List, Optional
 
 
 @dataclass
 class AppliesTo:
+    """The skills/item-tags/recipes/crafting-tables a Bonus's condition is scoped to."""
+
     skills: List[str] = field(default_factory=list)
     item_tags: List[str] = field(default_factory=list)
     recipes: List[str] = field(default_factory=list)
     crafting_tables: List[str] = field(default_factory=list)
 
     def to_dict(self):
+        """Serialize this scope to a plain dict for JSON/TypeScript output."""
         return {
             'skills': self.skills,
             'itemTags': self.item_tags,
@@ -20,6 +25,9 @@ class AppliesTo:
 
 @dataclass
 class Bonus:
+    """A single crafting-related effect (e.g. reduced resource cost) granted by a benefit,
+    scoped by an AppliesTo condition."""
+
     action: str
     effect_type: str
     value: object
@@ -27,6 +35,7 @@ class Bonus:
     cap: Optional[float] = None
 
     def to_dict(self):
+        """Serialize this bonus to a plain dict for JSON/TypeScript output."""
         return {
             'action': self.action,
             'effectType': self.effect_type,
@@ -38,6 +47,8 @@ class Bonus:
 
 @dataclass
 class Benefit:
+    """A talent granted by a skill at a given level, and the bonuses it confers."""
+
     name: str
     name_id: str
     skill_name_id: str
@@ -47,6 +58,7 @@ class Benefit:
     raw_value: Optional[float] = None
 
     def to_dict(self):
+        """Serialize this benefit to a plain dict for JSON/TypeScript output."""
         return {
             'name': self.name,
             'nameID': self.name_id,

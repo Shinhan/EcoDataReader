@@ -1,3 +1,5 @@
+"""Recipe model."""
+
 from dataclasses import dataclass, field
 from typing import List
 import logging
@@ -9,6 +11,8 @@ logger = logging.getLogger(__name__)
 
 @dataclass
 class Recipe:
+    """A crafting recipe: the skill/level, labor, crafting table, ingredients and outputs."""
+
     name: str
     name_id: str
     skill_name_id: str
@@ -20,6 +24,7 @@ class Recipe:
     hidden: bool = False
 
     def to_readable_string(self) -> str:
+        """Format this recipe as a multi-line human-readable summary."""
         result = f"{self.name} ({self.name_id})\n"
         result += f"{self.labor} calories of level {self.level} {self.skill_name_id.replace('Skill', '')} "
         result += f"labor at {self.crafting_table_name_id.replace('Object', '')}\n"
@@ -33,6 +38,7 @@ class Recipe:
 
     @staticmethod
     def recipes_are_equal(old_recipe: 'Recipe', new_recipe: 'Recipe') -> bool:
+        """Compare two recipes for changes, logging each differing field along the way."""
         if old_recipe == new_recipe:
             return False
 
@@ -70,9 +76,11 @@ class Recipe:
 
     @staticmethod
     def _log_diff(prop_name: str, old, newer, recipe_name: str):
+        """Log a single changed field for a recipe."""
         logger.info(f"{recipe_name} {prop_name}: {old} -> {newer}")
 
     def to_dict(self):
+        """Serialize this recipe to a plain dict for JSON/TypeScript output."""
         return {
             'name': self.name,
             'nameID': self.name_id,

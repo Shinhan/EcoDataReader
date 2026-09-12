@@ -1,3 +1,5 @@
+"""Recipe output model."""
+
 from dataclasses import dataclass
 from decimal import Decimal
 from .item import Item
@@ -5,12 +7,15 @@ from .item import Item
 
 @dataclass
 class Output:
+    """A quantity of an item produced by a recipe."""
+
     item_name_id: str
     quantity: Decimal
     reducible: bool = False
     primary: bool = False
 
     def to_readable_string(self) -> str:
+        """Format this output as a short human-readable line, e.g. '2 Wood (P)'."""
         reduce = " (R)" if self.reducible else ""
         prim = " (P)" if self.primary else ""
         return f"{self.quantity} {self.item_name_id}{reduce}{prim}"
@@ -27,6 +32,7 @@ class Output:
         return hash((self.item_name_id, self.quantity, self.reducible, self.primary))
 
     def to_dict(self):
+        """Serialize this output to a plain dict for JSON/TypeScript output."""
         return {
             'item': self.item_name_id,
             'quantity': float(self.quantity),
