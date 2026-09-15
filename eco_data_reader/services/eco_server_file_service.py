@@ -510,7 +510,8 @@ class EcoServerFileService:
 
         applies_to = AppliesTo(
             skills=cls._extract_hashset_typeof_names(cause_block, 'SkillTypes'),
-            recipes=cls._extract_hashset_typeof_names(cause_block, 'Recipes'),
+            recipes=[cls._strip_recipe_suffix(name)
+                     for name in cls._extract_hashset_typeof_names(cause_block, 'Recipes')],
             crafting_tables=cls._extract_hashset_typeof_names(cause_block, 'CraftStationTypes'),
             item_tags=cls._extract_hashset_quoted_strings(cause_block, 'ItemTags')
         )
@@ -554,6 +555,14 @@ class EcoServerFileService:
         if not field_match:
             return []
         return re.findall(r'typeof\((\w+)\)', field_match.group(1))
+
+    @staticmethod
+    def _strip_recipe_suffix(recipe_class_name: str) -> str:
+        """Strip the trailing 'Recipe' from a RecipeFamily class name (e.g. PirozhokRecipe ->
+        Pirozhok) so it matches the recipe nameID convention used in recipes.ts."""
+        if recipe_class_name.endswith('Recipe'):
+            return recipe_class_name[:-len('Recipe')]
+        return recipe_class_name
 
     @staticmethod
     def _extract_hashset_quoted_strings(cause_block: str, field_name: str) -> List[str]:
